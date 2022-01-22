@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <link rel="apple-touch-icon" sizes="57x57" href="ico/apple-icon-57x57.png">
+  <link rel="apple-touch-icon" sizes="60x60" href="ico/apple-icon-60x60.png">
+  <link rel="apple-touch-icon" sizes="72x72" href="ico/apple-icon-72x72.png">
+  <link rel="apple-touch-icon" sizes="76x76" href="ico/apple-icon-76x76.png">
+  <link rel="apple-touch-icon" sizes="114x114" href="ico/apple-icon-114x114.png">
+  <link rel="apple-touch-icon" sizes="120x120" href="ico/apple-icon-120x120.png">
+  <link rel="apple-touch-icon" sizes="144x144" href="ico/apple-icon-144x144.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="ico/apple-icon-152x152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="ico/apple-icon-180x180.png">
+  <link rel="icon" type="image/png" sizes="192x192"  href="ico/android-icon-192x192.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="ico/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="96x96" href="ico/favicon-96x96.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="ico/favicon-16x16.png">
+  <link rel="manifest" href="ico//manifest.json">
+  <meta name="msapplication-TileColor" content="#000000">
+  <meta name="msapplication-TileImage" content="ico/ms-icon-144x144.png">
+  <meta name="theme-color" content="#000000">
+  <title>Tridome</title>
+  <script src="https://aframe.io/releases/0.8.2/aframe.min.js"></script>
+  <script src="https://unpkg.com/aframe-animation-component@^4.1.2/dist/aframe-animation-component.min.js"></script>
+</head>
+
+<style media="screen">
+
+    body {
+      background-color: #000;
+    }
+
+    .close-eyes {
+      background-color: #000;
+      position: absolute;
+      height: 100vh;
+      width: 100vw;
+      z-index: 100;
+    }
+
+</style>
+
+<body>
+
+  <div class="close-eyes"></div>
+
+  <a-scene>
+
+    <a-assets>
+      <!-- IMG  -->
+      <img id="bg" src="img/home/bg_home.jpg">
+      <img id="icona1" src="img/link/icona1.png">
+      <img id="icona2" src="img/link/icona2.png">
+      <img id="icona3" src="img/link/icona3.png">
+
+      <!-- AUDIO -->
+      <audio id="bg_sound" src="audio/home.mp3" loop></audio>
+    </a-assets>
+
+    <!-- Inserisco il cursore -->
+    <a-entity camera look-controls>
+      <a-entity raycaster="objects: .clickable"
+                material="color: #fff"
+                cursor="fuse: true; fuseTimeout: 1400"
+                geometry="primitive: ring; radius-inner:0.003; radius-outer: 0.007"
+                position="0 0 -1"
+                animation__fuse1="startEvents: fusing; property: geometry.radiusInner; dur: 300;
+                                  easing: easeInSine; to: 0.014;"
+                animation__fuse2="startEvents: fusing; property: geometry.radiusOuter; dur: 300;
+                                  easing: easeInSine; to: 0.018;"
+                animation__fuse3="startEvents: fusing; property: geometry.radiusInner; delay:300; dur: 1100;
+                                  easing: easeInSine; from:0.014; to: 0;"
+                animation__click1="startEvents: click; property: geometry.radiusInner; dur: 10;
+                                  easing: easeInSine; from:0; to: 0.003;"
+                animation__click2="startEvents: click; property: geometry.radiusOuter; dur: 10;
+                                   easing: easeInSine; from: 0.018; to: 0.007;"
+                animation__mouseleave1="startEvents: mouseleave; property: geometry.radiusInner; dur: 300;
+                                   easing: easeInSine; to: 0.004;"
+                animation__mouseleave2="startEvents: mouseleave; property: geometry.radiusOuter; dur: 300;
+                                   easing: easeInSine; from: 0.0071; to: 0.007;"
+                ></a-entity>
+    </a-entity>
+
+    <a-sound id="bg-sound" src="#bg_sound"></a-sound>
+
+      <!-- Link ad ambienti interni -->
+      <a-circle id="link1" class="clickable" shader="flat" src="#icona1" radius="0.95" position="-5.5 0.8 -3" rotation="0 60.00 0"></a-circle>
+      <a-text value="SKATE PARK" align="center" color="#e75b1d" width="6" position="-5.5 2.1 -3" rotation="0 60.00 0"></a-text>
+      <a-circle id="link2" class="clickable" shader="flat" src="#icona2" radius="0.95" position="5.5 0.8 -3" rotation="0 -60.00 0"></a-circle>
+      <a-text value="LAGO" align="center" color="#e75b1d" width="6" position="5.5 2.1 -3" rotation="0 -60.00 0"></a-text>
+      <a-circle id="link3" class="clickable" shader="flat" src="#icona3" radius="0.95" position="0 0.8 7" rotation="0 180.00 0"></a-circle>
+      <a-text value="MONTAGNA" align="center" color="#e75b1d" width="6" position="0 2.1 7" rotation="0 180.00 0"></a-text>
+
+      <!-- Componenti paesaggio -->
+      <a-sky phi-start="60" src="#bg"></a-sky>
+
+  </a-scene>
+
+  <script>
+
+    const link1 = document.getElementById("link1");
+    const link2 = document.getElementById("link2");
+    const link3 = document.getElementById("link3");
+    const sound = document.getElementById('bg-sound');
+    var screenBlocker = document.querySelector(".close-eyes");
+    var scene = document.querySelector('a-scene');
+
+    scene.addEventListener('loaded', function () {
+      screenBlocker.style.display = "none";
+      sound.components.sound.playSound();
+    });
+
+    link1.addEventListener('click', function () {
+        window.location.href = 'ambienti/skate.html';
+    });
+
+    link2.addEventListener('click', function () {
+        window.location.href = 'ambienti/lake.html';
+    });
+
+    link3.addEventListener('click', function () {
+        window.location.href = 'ambienti/mountain.html';
+    });
+  </script>
+
+</body>
+</html>
